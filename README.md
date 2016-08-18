@@ -26,7 +26,7 @@ Implementación
 
 Primero debe asegurarse de llamar las dependencias señaladas arriba y luego incluir el script de la directiva, dependiendo de las condiciones de la instalación podría ser así:
 
-<script href=”bower_components/masterkey/dist/js/masterkey-api.js”/>
+script href=”bower_components/masterkey/dist/js/masterkey-api.js”/
 
 
 Configuración
