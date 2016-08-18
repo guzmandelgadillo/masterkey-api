@@ -1,0 +1,45 @@
+﻿<div style="overflow: visible; background-color: #CCC; margin: 15px 0; padding: 15px;">
+    <form class="row" ng-submit="goSearch(searchCmd.place, searchCmd.courseType)">
+        <div class="col-md-3">
+            <select ng-options="type.value as (type.value) for type in courseTypeList"
+                    ng-model="searchCmd.courseType"
+                    class="form-control"></select>
+        </div>
+
+        <div class="col-md-6">
+            <ui-select ng-model="searchCmd.place" name="place">
+
+                <ui-select-match placeholder="{{ 'courseCountry.placeholder' }}">
+                    <span class="fa fa-map-marker" ng-show="$select.selected.type == 'city'"></span>
+                    <span class="fa fa-university" ng-show="$select.selected.type == 'school'"></span>
+                    <span class="fa fa-flag" ng-show="$select.selected.type == 'country'"></span>
+                    <span ng-bind="$select.selected.name"></span>
+                    <span ng-show="$select.selected.type == 'city'">, {{ searchCmd.place.countryCode }}</span>
+                </ui-select-match>
+
+                <ui-select-choices repeat="place in placeList"
+                                   refresh="refreshPlaceList($select.search, searchCmd.courseType)"
+                                   refresh-delay="300">
+
+                    <i ng-class="getIconType(place.type)"></i>
+                    <span ng-bind-html="place.name"></span>
+
+                    <span ng-show="place.type == 'city'">
+                        - <span>{{ place.countryCode }}</span>
+                    </span>
+
+                    <br>
+                    <small>{{ place.type | lowercase }}</small>
+
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-3">
+            <button class="btn-default btn btn-block">
+                <i class="glyphicon glyphicon-search"></i>
+                <span>Search Course</span>
+            </button>
+        </div>
+    </form>
+</div>
+

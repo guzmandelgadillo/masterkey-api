@@ -1,0 +1,77 @@
+﻿<div class="alert alert-warning" ng-hide="!courseList||courseList.length">
+    No courses match the filter
+</div>
+<table class="table table-striped" ng-show="courseList && courseList.length">
+    <tbody>
+        <tr class="tier-{{ course.tier | lowercase }}"
+            ng-class="{'warning': course.statement.regularPrice > course.statement.total}"
+            ng-repeat="course in courseList
+                | limitTo: query.$max">
+            <td width="132" class="v-padding-md">
+                <span ng-show="course.institute.iconUri">
+                    <img ng-src="imageUrl(course.institute.iconUri)" />
+                </span>
+                <span ng-hide="course.institute.iconUri" class="fa fa-university fa-3x"></span>
+            </td>
+            <td>
+                <h4><span>{{ course.name }}</span></h4>
+                <ul>
+                    <li style="display: inline; margin-right: 5px;">
+                        {{ course.institute.city.name}}, {{ course.institute.city.country.name }}
+                    </li>
+                    <li style="display: inline; margin-right: 5px;" ng-show="course.language.name">
+                        <i class="fa fa-comments"></i> {{ course.language.name }}
+                    </li>
+                </ul>
+                <ul>
+                    <li style="display: inline; margin-right: 5px;">
+                        <i class="fa fa-university"></i>
+                        {{ course.institute.campus }}, {{ course.institute.name}}
+                    </li>
+                    <li style="display: inline; margin-right: 5px;" ng-show="course.category.name"><i class="fa fa-tag"></i>  {{ course.category.name }}</li>
+                    <li style="display: inline; margin-right: 5px;" ng-show="course.area.name"><i class="fa fa-bookmark"></i>  {{ course.area.name }}</li>
+                </ul>
+            </td>
+
+            <td class="v-padding-md" options-toogle>
+                <div ng-repeat="courseVariant in course.courseVariant | orderBy: '-upcomingEvent.length'" style="margin-bottom: 10px;">
+                    <p style="margin-bottom: 4px">
+                        <span ng-bind="courseVariant.name"></span>
+                    </p>
+
+                    <div ng-show="courseVariant.upcomingEvent.length">
+                        <ul class="list-inline up-ul" ng-repeat="courseEvent in courseVariant.upcomingEvent | orderBy: 'start' | limitTo: 1">
+                            <li>
+                                <i class="fa fa-calendar-o"></i>
+                                <span ng-bind="courseEvent.start | date: 'mediumDate'"></span>
+                            </li>
+                            <li>
+                                <i class="fa fa-circle-o-notch"></i>
+                                <span ng-bind="courseVariant.duration.min + ' - ' + courseVariant.duration.max"
+                                      ng-show="courseVariant.duration.min !== courseVariant.duration.max"></span>
+                                <span ng-bind="courseVariant.duration.min"
+                                      ng-hide="courseVariant.duration.min !== courseVariant.duration.max"></span>
+
+                                <span translate="{{ courseVariant.duration.term | lowercase }}.plural"></span>
+                            </li>
+
+                        </ul>
+
+                        <div class="btn-group">
+                            <a href=""
+                               class="btn btn-sm btn-info">
+                                <i class="fa fa-paper-plane-o"></i>
+                                <span translate="quote.button"></span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <p ng-hide="courseVariant.upcomingEvent.length" class="text-warning"
+                       translate="courseEvent.upcoming.notFound">
+                    </p>
+
+                </div><!-- ng-repeat courseVariantLis -->
+            </td>
+        </tr>
+    </tbody>
+</table>

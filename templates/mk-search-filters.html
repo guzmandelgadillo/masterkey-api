@@ -1,0 +1,67 @@
+﻿<div>
+    <div class="input-group margin-bottom-10" ng-hide="place.type == 'school'">
+        <span class="input-group-addon"><i class="fa fa-university"></i></span>
+        <select ng-options="school as school.name
+                for school in options.schoolList
+                | orderBy:'name' track by school.id"
+                ng-model="query.school"
+                ng-change="refresh()"
+                class="form-control input-sm">
+            <option value="">{{ 'select...' }}</option>
+        </select>
+    </div>
+
+    <div class="input-group margin-bottom-10" ng-hide="place.type == 'city'">
+        <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+        <select ng-options="city as city.name
+                for city in options.cityList
+                | orderBy:'name' track by city.id"
+                ng-model="query.city"
+                ng-change="refresh()"
+                class="form-control input-sm">
+            <option value="">{{ 'select...' }}</option>
+        </select>
+    </div>
+
+    <div class="input-group" ng-show="place.type == 'school'">
+        <span class="input-group-addon"><i class="fa fa-flag"></i></span>
+        <select ng-options="country as country.name
+                for country in options.countryList
+                | orderBy:'name' track by country.id"
+                ng-model="query.country"
+                ng-change="refresh()"
+                class="form-control input-sm">
+            <option value="">{{ 'select...' }}</option>
+        </select>
+    </div>
+
+    <hr>
+
+    <div class="input-group" ng-show="options.categoryList">
+        <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+        <select ng-options="
+                tax.name for tax
+                in options.categoryList
+                track by tax.id"
+                ng-model="query.category"
+                ng-change="refresh()"
+                class="form-control input-sm">
+            <option value="">{{ 'select...' }}</option>
+        </select>
+    </div>
+
+    <hr ng-show="options.categoryList">
+
+    <div class="input-group" ng-show="options.areaList">
+        <span class="input-group-addon"><i class="fa fa-bookmark"></i></span>
+        <select ng-options="
+                tax.name for tax
+                in options.areaList
+                track by tax.id"
+                ng-model="query.area"
+                ng-change="refresh()"
+                class="form-control input-sm">
+            <option value="">{{ 'select...' }}</option>
+        </select>
+    </div>
+</div>

@@ -1,0 +1,143 @@
+﻿<div>
+    <h3 style="background-color:#ddd; padding: 5px; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; margin: 15px 0;">
+        <span ng-bind="course.name"></span>, <span ng-bind="course.institute.campus"></span> <small data-translate="quote.create"></small>
+    </h3>
+    <div class="row" style="margin: 15px 0;">
+        <div class="col-md-7">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" ng-class="{active: isActiveTab('course')}">
+                    <a href="" ng-click="setTab('course')" aria-controls="course" role="tab" data-toggle="tab" data-translate="course"></a>
+                </li>
+                <li role="presentation" ng-class="{active: isActiveTab('accommodation')}">
+                    <a href="" aria-controls="accommodation" role="tab" data-toggle="tab" data-translate="accommodation.singular"></a>
+                </li>
+                <li role="presentation" ng-class="{active: isActiveTab('services')}" ng-show="providerList.length">
+                    <a href="" ng-click="setTab('services')" aria-controls="services" role="tab" data-toggle="tab" data-translate="service.plural"></a>
+                </li>
+            </ul>
+            <div class="panel panel-default" style="margin:15px 0;">
+                <div class="panel-heading">
+                    <strong data-translate="course"></strong>
+                    <strong ng-bind="cmd.courseLine.product.name"></strong>
+                    <strong class="pull-right">{{draft.courseLine.total|number:2}} {{draft.courseLine.currency}}</strong>
+                </div>
+                <div class="panel-body">
+                    <div style="clear:both;margin: 15px 0;">
+                        <div class="col-md-12">
+                            <select class="form-control"
+                                    ng-options="courseVariant.name for courseVariant
+                                            in course.variant
+                                            track by courseVariant.id"
+                                    ng-model="courseVariant"
+                                    ng-change="refreshQuote(course.id, courseVariant.id)"></select>
+                        </div>
+                        <div class="col-md-9">
+                            <div><label><span data-translate="start"></span> <span class="text-danger">*</span></label></div>
+                            <div>
+                                <select class="form-control"
+                                        ng-options="(event | eventFormat )
+                                                for event in options.courseLine.event
+                                                track by event.id"
+                                        ng-model="cmd.courseLine.event"
+                                        ng-change="refreshDraft(cmd)"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{courseLine.qty}} <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li ng-repeat="qty in options.courseLine.qty"><a href="" ng-click="refreshDraft(cmd)" ng-bind="qty"></a></li>
+                                    </ul>
+                                </div>
+                                <span class="input-group-addon">{{courseVariant.duration.term|translate}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <mk-quote-variant></mk-quote-variant>
+                </div>
+            </div>
+            <mk-quote-associated options="options.associatedServiceLine.product" serviceLine="cmd.associatedServiceLine[service.id]"></mk-quote-associated>
+        </div>
+        <div class="col-md-4">
+            <div class="alert alert-info">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span data-translate="total.estimated"></span>
+                            </td>
+                            <td>
+                                {{draft.localTotal.amount|number:2}} {{draft.localTotal.currency}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span ng-repeat="price in draft.total.byCurrency">
+                                    <i ng-show="$index>0">+</i>
+                                    {{price.amount|number:2}} {{price.currency}}
+                                </span>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr ng-repeat="line in draft.lines">
+                            <td>
+                                <span class="fa fa-chevron-right"></span>
+                                <span ng-show="line.type=='AgencyFee'" data-translate="line.{{ line.name }}"></span>
+                                <span ng-hide="line.type=='AgencyFee'" ng-bind="line.name"></span>
+                            </td>
+                            <td class="text-right">
+                                {{line.total|number:2}} {{line.currency}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel panel-warning" ng-show="draft.notesByType.Warning.length">
+                <div class="panel-heading">
+                    <p class="panel-title">
+                        <i class="fa fa-warning"></i>
+                        <span data-translate="note.Warning"></span>
+                    </p>
+
+                    <ul>
+                        <li class="text-warning" ng-repeat="note in draft.notesByType.Warning" ng-bind="note.message">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel panel-success" ng-show="optionalPromotionList">
+                <div class="panel-heading">
+                    <p class="panel-title">
+                        <i class="fa fa-star"></i>
+                        <span data-translate="promotion.available.plural"></span>
+                    </p>
+
+                    <div class="checkbox" ng-repeat="promotion in optionalPromotionList">
+                        <label>
+                            <input type="checkbox"
+                                   checklist-model="cmd.agencyPromotionList"
+                                   checklist-value="promotion"
+                                   checklist-change="refreshDraft(cmd)">
+
+                            <span ng-bind="promotion.name"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" ng-show="draft.notesByType.Info.length">
+                <div class="panel-heading">
+                    <p data-translate="note.Info"></p>
+
+                    <ul>
+                        <li ng-repeat="note in draft.notesByType.Info" ng-bind="note.message">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

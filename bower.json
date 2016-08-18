@@ -1,0 +1,20 @@
+{
+  "name": "masterkey-api",
+  "homepage": "https://github.com/guzmandelgadillo/masterkey-api",
+  "authors": [
+    "masterkey"
+  ],
+  "description": "Directivas de búsqueda y cotización de cursos",
+  "main": "dist/masterkey-api.js",
+  "keywords": [
+    "masterkey"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

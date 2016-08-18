@@ -1,0 +1,78 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong data-translate="associatedServices"></strong>
+    </div>
+    <table class="table table-borderless table-fixed">
+        <tbody>
+            <tr ng-repeat="service in options | orderBy: 'name'"
+                ng-class="{active: serviceLine.added}">
+                <td>
+                    <button class="btn btn-default btn-xs"
+                            type="button"
+                            ng-hide="serviceLine.added"
+                            ng-click="serviceLine.add(); refreshDraft(cmd)">
+                        <i class="fa fa-plus"></i>
+                        <span translate="add"></span>
+                    </button>
+                    <button class="btn btn-default btn-xs"
+                            type="button"
+                            ng-show="aerviceLine.added"
+                            ng-click="serviceLine.remove(); refreshDraft(cmd)">
+                        <i class="fa fa-remove"></i>
+                        <span translate="remove"></span>
+                    </button>
+                </td>
+                <td class="td-width">
+                    <h5 ng-bind="service.name"></h5>
+                    <small ng-bind="service.provider.name"></small>
+
+                    <div ng-if="serviceLine.added" class="row">
+
+                        <!-- @TODO Switch based on widget, add start and end date -->
+                        <div ng-hide="service.pricingRule == 'UniquePrice'"
+                             style="padding-top: 8px; padding-bottom: 8px">
+
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input type="number" min="1" class="form-control input-sm"
+                                           ng-model-options="{ debounce: 1500 }"
+                                           ng-model="serviceLine.qty"
+                                           ng-change="refreshDraft(cmd)">
+                                    <span class="input-group-addon">
+                                        <span translate="unit.{{ service.productUnit }}"></span>
+                                        [<span ng-bind="serviceLine.draftLine.items[0].unitPrice | number:2"></span>]
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                </td>
+
+                <td align="right">
+                    <span ng-show="<%- service %>.added ">
+                        <strong price="<%- service %>.draftLine.regularPrice"
+                                currency-code="service.currency"
+                                symbol="true"
+                                exchange="false">
+                        </strong>
+
+                        <span ng-show="serviceLine.draftLine.total < serviceLine.draftLine.regularPrice">
+                            <br> -
+                            <strong currency-code="service.currency"
+                                    class="text-success"
+                                    price="serviceLine.draftLine.regularPrice - serviceLine.draftLine.total"
+                                    symbol="true"
+                                    exchange="false">
+                            </strong>
+                        </span>
+                    </span>
+
+                    <span ng-hide="serviceLine.added" class="text-muted">
+                        <span price="service.price[0].amount" currency-code="service.currency" symbol="true" exchange="false"></span><br>
+                        <small translate="unit.{{ service.periodicCost }}" ng-show="service.periodicCost != 'Once'"></small>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

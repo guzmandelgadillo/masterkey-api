@@ -1,0 +1,45 @@
+[
+  {
+    "key": "language",
+    "value": "Language",
+    "term": [
+      "Week"
+    ]
+  },
+  {
+    "key": "summerCamp",
+    "value": "SummerCamp",
+    "term": [
+      "Week"
+    ]
+  },
+  {
+    "key": "workExperience",
+    "value": "WorkExperience",
+    "term": [
+      "Week"
+    ]
+  },
+  {
+    "key": "shortTerm",
+    "value": "ShortTerm",
+    "term": [
+      "Month",
+      "Semester",
+      "Year",
+      "Term"
+    ]
+  },
+  {
+    "key": "degree",
+    "value": "Degree",
+    "term": [
+      "Week",
+      "Month",
+      "Quarter",
+      "Semester",
+      "Year",
+      "Term"
+    ]
+  }
+]
