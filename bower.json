@@ -4,6 +4,11 @@
   "authors": [
     "masterkey"
   ],
+  "dependencies": {
+    "angular-ui-select": "^0.19.3",
+    "angular-translate": "^2.11.1",
+    "bootstrap": "^3.0.0"
+  },
   "description": "Directivas de búsqueda y cotización de cursos",
   "main": "dist/masterkey-api.js",
   "keywords": [
