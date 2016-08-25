@@ -9,6 +9,7 @@
             scope: {
                 courseList: "=",
                 options: "=lists",
+                place: "=",
                 query: "=filters",
                 refresh: "&"
             }

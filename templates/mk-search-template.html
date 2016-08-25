@@ -8,7 +8,7 @@
         </div>
         <div class="row" ng-show="courseList">
             <div class="col-md-2" ng-hide="$loading">
-                <mk-search-filters lists="options" filters="query" refresh="filterCourses()"></mk-search-filters>
+                <mk-search-filters lists="options" place="searchCmd.place" filters="query" refresh="filterCourses($city, $school)"></mk-search-filters>
             </div>
             <div class="col-md-10">
                 <div class="row">

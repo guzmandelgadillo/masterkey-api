@@ -7,10 +7,14 @@
             var variantData = courseService.getCourseVariant(courseId, courseVariantId);
             var eventlistData = courseService.listByCourseVariant(courseVariantId);
             var promotionlistData = courseService.listOptionalPromotion(courseId);
+            courseData.$promise.then(responseCourseData);
+            variantData.$promise.then(responseVariantData);
+            eventlistData.$promise.then(responseEventlistData);
             
             // Initialize values
             scope.course = courseData;
             scope.courseVariant = variantData;
+            scope.courseEventList = eventlistData;
             scope.optionalPromotionList = promotionlistData;
             scope.draft = {};
             scope.options = [];
@@ -25,20 +29,29 @@
                 associatedServiceLine: {},
                 agencyPromotionList: promotionlistData
             };
+            scope.courseLine = scope.cmd.courseLine;
 
             function responseCourseData(response) {
                 scope.cmd.course = courseData;
                 // Default data for new Sales
                 scope.opportunity.courseType = courseData.type;
                 scope.opportunity.isClientStudent = true;
+                tryUpdateOptions(scope.cmd);
             }
 
             function responseVariantData(response) {
-                scope.cmd.courseLine.product = courseVariant;
+                scope.cmd.courseLine.product = variantData;
+                tryUpdateOptions(scope.cmd);
             }
 
             function responseEventlistData(response) {
-                scope.cmd.courseLine.event = courseEvent;
+                scope.cmd.courseLine.event = eventlistData[0];
+                tryUpdateOptions(scope.cmd);
+            }
+
+            function tryUpdateOptions(cmd) {
+                if (courseData.$resolved && variantData.$resolved && eventlistData.$resolved)
+                    scope.options = updateOptions(scope, cmd);
             }
         }
 

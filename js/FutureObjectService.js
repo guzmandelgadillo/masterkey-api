@@ -2,8 +2,8 @@
     'use strict';
 
     angular.module('masterkey.api').factory('futureObjectService',
-        ["$http", "BackendPagination", "configurations", "endpointService", futureService]);
-    function futureService($http, BackendPagination, configurations, endpoints) {
+        ["$http", "BackendPagination", "endpointService", futureService]);
+    function futureService($http, BackendPagination, endpoints) {
         function getPromise(url, params, format) {
             return getFutureObject(url, params, format).$promise;
         }

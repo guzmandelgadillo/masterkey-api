@@ -16,14 +16,13 @@
                 return tab === scope.activeTab;
             }
 
-            scope.options = updateOptions(scope.cmd);
-
             scope.refreshQuote = function (courseId, courseVariantId) {
             }
 
-            scope.refreshDraft = function (cmd) {
-                scope.cmd = quoteService.refreshCommand(cmd);
+            scope.refreshDraft = function (cmd, qty) {
+                scope.cmd = quoteService.refreshCommand(cmd, scope.options);
                 scope.options = updateOptions(scope.cmd, scope.options);
+                scope.courseLine.qty = qty;
 
                 // Aquí falta insertar el objeto scope.cmd
             }

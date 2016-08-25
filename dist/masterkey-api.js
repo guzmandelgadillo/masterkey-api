@@ -1,21 +1,23 @@
 (function () {
     'use strict';
-    angular.module("masterkey.api", ["ngSanitize", "ui.select", "pascalprecht.translate"]);
+    angular.module("masterkey.api", ["ngSanitize", "ui.select", "pascalprecht.translate"]).config(["configurations", configure]);
+    function configure(configurations) {
+    }
 })();
 
 (function (angular) {
     angular.module("masterkey.api").constant("configurations", {
         endpoint: {
             "authTenant": "dev",
-            "authToken": "null",
+            "authToken": "",
             "host": "dev.masterkeyeducation.com:8080",
             "protocol": "http",
             "urlbase": "masterkey/",
             "server": "agency/"
         },
         location: {
-            "urlbase": "/Scripts/",
-            "home": "masterkey/",
+            "urlbase": "bower_components/",
+            "home": "masterkey-api/",
             "data": "data/",
             "templates": "templates/"
         }
@@ -294,8 +296,8 @@
     'use strict';
 
     angular.module('masterkey.api').factory('futureObjectService',
-        ["$http", "BackendPagination", "configurations", "endpointService", futureService]);
-    function futureService($http, BackendPagination, configurations, endpoints) {
+        ["$http", "BackendPagination", "endpointService", futureService]);
+    function futureService($http, BackendPagination, endpoints) {
         function getPromise(url, params, format) {
             return getFutureObject(url, params, format).$promise;
         }
@@ -383,6 +385,7 @@
         var templateUrl = paths.templatesPath + "mk-quote-associated.html";
 
         function link(scope, elem, attrs) {
+            var x = 2;
         }
 
         return {
@@ -416,14 +419,13 @@
                 return tab === scope.activeTab;
             }
 
-            scope.options = updateOptions(scope.cmd);
-
             scope.refreshQuote = function (courseId, courseVariantId) {
             }
 
-            scope.refreshDraft = function (cmd) {
-                scope.cmd = quoteService.refreshCommand(cmd);
+            scope.refreshDraft = function (cmd, qty) {
+                scope.cmd = quoteService.refreshCommand(cmd, scope.options);
                 scope.options = updateOptions(scope.cmd, scope.options);
+                scope.courseLine.qty = qty;
 
                 // Aquí falta insertar el objeto scope.cmd
             }
@@ -482,15 +484,31 @@
         function link(scope, elem, attrs) {
             // Updating user token
             paths.setAuthToken(scope.userToken);
+            scope.query = {};
 
             // Filtering list of courses
-            scope.filterCourses = function () {
+            scope.filterCourses = function (city, school) {
                 var filter = {};
-                _.forIn(query, function (value, key) {
+                _.forIn(scope.query, function (value, key) {
                     if (value)
-                        query[key] = value;
+                        filter[key] = value;
                 });
-                scope.courseList = _.filter(scope.unfilteredList, query);
+                scope.courseList = _.filter(scope.unfilteredList, function (value, index) {
+                    if (filter.school) {
+                        if (filter.city)
+                            return schoolFilter(value, filter) && cityFilter(value, filter);
+                        return schoolFilter(value, filter);
+                    }
+                    if (filter.city) {
+                        if (filter.country)
+                            return cityFilter(value, filter) && countryFilter(value, filter);
+                        return cityFilter(value, filter);
+                    }
+                    if (filter.country)
+                        return countryFilter(value, filter);
+
+                    return true;
+                });
             }
 
             // Get icon class from font awesome
@@ -523,23 +541,48 @@
                 refreshOptionsList(scope.courseList);
             }
 
+            function cityFilter(value, filter) {
+                return countryFilter(value,filter) &&
+                    value.institute.city.id == filter.city.id;
+            }
+
+            function countryFilter(value, filter) {
+                return value.institute && value.institute.city && value.institute.city.country &&
+                    value.institute.city.country.id == filter.city.country.id;
+            }
+
+            function schoolFilter(value, filter) {
+                return value.institute && value.institute.school &&
+                    value.institute.school.id == filter.school.id;
+            }
+
             // Filtering options of filters
             function refreshOptionsList(courseList) {
-                var options = {
-                    cityList: 'institute.city',
-                    countryList: 'institute.city.country',
-                    schoolList: 'institute.school',
-                    categoryList: 'category'
+                scope.options = {
+                    cityList: [],
+                    schoolList: []
                 };
-
-                scope.options = {};
-                _.forIn(options, function (value, key) {
-                    var temp = _.uniqBy(courseList, value);
-                    scope.options[key] = _.map(temp, function (item) {
-                        return item[value];
-                    });
-                    scope.options[key] = _.compact(scope.options[key]);
-                });
+                for (var index = 0; index < courseList.length; index++) {
+                    var value = courseList[index];
+                    if (value.institute) {
+                        var city = value.institute.city;
+                        var school = value.institute.school;
+                        if (city) {
+                            var exist = _.some(scope.options.cityList, function (item, index) {
+                                return item.id && item.id == city.id && item.country && item.country.id == city.country.id;
+                            });
+                            if (!exist)
+                                scope.options.cityList.push(city);
+                        }
+                        if (school) {
+                            var exist = _.some(scope.options.schoolList, function (item, index) {
+                                return item.id && item.id == school.id;
+                            });
+                            if (!exist)
+                                scope.options.schoolList.push(school);
+                        }
+                    }
+                }
             }
         }
 
@@ -565,6 +608,7 @@
             scope: {
                 courseList: "=",
                 options: "=lists",
+                place: "=",
                 query: "=filters",
                 refresh: "&"
             }
@@ -665,10 +709,14 @@ angular.module('masterkey.api')
             var variantData = courseService.getCourseVariant(courseId, courseVariantId);
             var eventlistData = courseService.listByCourseVariant(courseVariantId);
             var promotionlistData = courseService.listOptionalPromotion(courseId);
+            courseData.$promise.then(responseCourseData);
+            variantData.$promise.then(responseVariantData);
+            eventlistData.$promise.then(responseEventlistData);
             
             // Initialize values
             scope.course = courseData;
             scope.courseVariant = variantData;
+            scope.courseEventList = eventlistData;
             scope.optionalPromotionList = promotionlistData;
             scope.draft = {};
             scope.options = [];
@@ -683,20 +731,29 @@ angular.module('masterkey.api')
                 associatedServiceLine: {},
                 agencyPromotionList: promotionlistData
             };
+            scope.courseLine = scope.cmd.courseLine;
 
             function responseCourseData(response) {
                 scope.cmd.course = courseData;
                 // Default data for new Sales
                 scope.opportunity.courseType = courseData.type;
                 scope.opportunity.isClientStudent = true;
+                tryUpdateOptions(scope.cmd);
             }
 
             function responseVariantData(response) {
-                scope.cmd.courseLine.product = courseVariant;
+                scope.cmd.courseLine.product = variantData;
+                tryUpdateOptions(scope.cmd);
             }
 
             function responseEventlistData(response) {
-                scope.cmd.courseLine.event = courseEvent;
+                scope.cmd.courseLine.event = eventlistData[0];
+                tryUpdateOptions(scope.cmd);
+            }
+
+            function tryUpdateOptions(cmd) {
+                if (courseData.$resolved && variantData.$resolved && eventlistData.$resolved)
+                    scope.options = updateOptions(scope, cmd);
             }
         }
 

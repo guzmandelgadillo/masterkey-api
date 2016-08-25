@@ -49,10 +49,11 @@
                                         {{courseLine.qty}} <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li ng-repeat="qty in options.courseLine.qty"><a href="" ng-click="refreshDraft(cmd)" ng-bind="qty"></a></li>
+                                        <li ng-repeat="qty in options.courseLine.qty"><a href="" ng-click="refreshDraft(cmd, qty)" ng-bind="qty"></a></li>
                                     </ul>
                                 </div>
-                                <span class="input-group-addon">{{courseVariant.duration.term|translate}}</span>
+                                <input type="text" class="form-control" />
+                                <div class="input-group-addon">{{courseVariant.duration.term|translate}}</div>
                             </div>
                         </div>
                     </div>

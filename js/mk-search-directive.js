@@ -8,15 +8,31 @@
         function link(scope, elem, attrs) {
             // Updating user token
             paths.setAuthToken(scope.userToken);
+            scope.query = {};
 
             // Filtering list of courses
-            scope.filterCourses = function () {
+            scope.filterCourses = function (city, school) {
                 var filter = {};
-                _.forIn(query, function (value, key) {
+                _.forIn(scope.query, function (value, key) {
                     if (value)
-                        query[key] = value;
+                        filter[key] = value;
                 });
-                scope.courseList = _.filter(scope.unfilteredList, query);
+                scope.courseList = _.filter(scope.unfilteredList, function (value, index) {
+                    if (filter.school) {
+                        if (filter.city)
+                            return schoolFilter(value, filter) && cityFilter(value, filter);
+                        return schoolFilter(value, filter);
+                    }
+                    if (filter.city) {
+                        if (filter.country)
+                            return cityFilter(value, filter) && countryFilter(value, filter);
+                        return cityFilter(value, filter);
+                    }
+                    if (filter.country)
+                        return countryFilter(value, filter);
+
+                    return true;
+                });
             }
 
             // Get icon class from font awesome
@@ -49,23 +65,48 @@
                 refreshOptionsList(scope.courseList);
             }
 
+            function cityFilter(value, filter) {
+                return countryFilter(value,filter) &&
+                    value.institute.city.id == filter.city.id;
+            }
+
+            function countryFilter(value, filter) {
+                return value.institute && value.institute.city && value.institute.city.country &&
+                    value.institute.city.country.id == filter.city.country.id;
+            }
+
+            function schoolFilter(value, filter) {
+                return value.institute && value.institute.school &&
+                    value.institute.school.id == filter.school.id;
+            }
+
             // Filtering options of filters
             function refreshOptionsList(courseList) {
-                var options = {
-                    cityList: 'institute.city',
-                    countryList: 'institute.city.country',
-                    schoolList: 'institute.school',
-                    categoryList: 'category'
+                scope.options = {
+                    cityList: [],
+                    schoolList: []
                 };
-
-                scope.options = {};
-                _.forIn(options, function (value, key) {
-                    var temp = _.uniqBy(courseList, value);
-                    scope.options[key] = _.map(temp, function (item) {
-                        return item[value];
-                    });
-                    scope.options[key] = _.compact(scope.options[key]);
-                });
+                for (var index = 0; index < courseList.length; index++) {
+                    var value = courseList[index];
+                    if (value.institute) {
+                        var city = value.institute.city;
+                        var school = value.institute.school;
+                        if (city) {
+                            var exist = _.some(scope.options.cityList, function (item, index) {
+                                return item.id && item.id == city.id && item.country && item.country.id == city.country.id;
+                            });
+                            if (!exist)
+                                scope.options.cityList.push(city);
+                        }
+                        if (school) {
+                            var exist = _.some(scope.options.schoolList, function (item, index) {
+                                return item.id && item.id == school.id;
+                            });
+                            if (!exist)
+                                scope.options.schoolList.push(school);
+                        }
+                    }
+                }
             }
         }
 

@@ -5,6 +5,7 @@
         var templateUrl = paths.templatesPath + "mk-quote-associated.html";
 
         function link(scope, elem, attrs) {
+            var x = 2;
         }
 
         return {
