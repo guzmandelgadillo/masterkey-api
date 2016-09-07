@@ -7,6 +7,7 @@
   "dependencies": {
     "angular-ui-select": "^0.19.3",
     "angular-translate": "^2.11.1",
+    "lodash": "^4.15.0",
     "bootstrap": "^3.0.0"
   },
   "description": "Directivas de búsqueda y cotización de cursos",
