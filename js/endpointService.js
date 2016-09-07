@@ -15,6 +15,17 @@
             return $http.get(uri, config).then(function (response) { return response.data; });
         }
 
+        function post(url, data, params) {
+            var headers = getHeaders();
+            var uri = apiPath + url;
+            var config = {
+                data: data,
+                params: params,
+                headers: headers
+            };
+            return $http.post(uri, data, config);
+        }
+
         function getHeaders() {
             return {
                 "X-Auth-Token": settings.authToken,
@@ -25,7 +36,8 @@
         return {
             apiPath: apiPath,
             get: get,
-            headers: getHeaders
+            headers: getHeaders,
+            post: post
         }
     }
 })(angular);

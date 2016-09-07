@@ -6,6 +6,7 @@
         var templateUrl = paths.templatesPath + "mk-quote-variant.html";
 
         function link(scope, elem, attrs) {
+            var x = 2;
         }
 
         return {
@@ -13,9 +14,9 @@
             templateUrl: templateUrl,
             replace: true,
             scope: {
-                fee: "="
+                fees: "="
             }
-        }
+        };
     }
 })(angular);
 

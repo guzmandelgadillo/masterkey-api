@@ -73,12 +73,17 @@
             return {};
         }
 
+        function postPromise(url, data, params) {
+            return endpoints.post(url, data, params);
+        }
+
         return {
             getDataPromise: getDataPromise,
             getFutureObject: getFutureObject,
             getFuturePagedObject: getFuturePagedObject,
             getFutureSingleObject: getFutureSingleObject,
-            getPromise: getPromise
+            getPromise: getPromise,
+            postPromise: postPromise
         };
     };
 })(angular);

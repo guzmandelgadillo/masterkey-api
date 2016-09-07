@@ -1,6 +1,6 @@
 ﻿(function (angular) {
-    angular.module("masterkey.api").directive("mkQuote", ["dataFile", "quoteService", quoteDirective]);
-    function quoteDirective(paths, quoteService) {
+    angular.module("masterkey.api").directive("mkQuote", ["dataFile", "quoteService", "currencyService", quoteDirective]);
+    function quoteDirective(paths, quoteService, currencyService) {
         // Template Url
         var templateUrl = paths.templatesPath + "mk-quote-template.html";
 
@@ -17,22 +17,19 @@
             }
 
             scope.refreshQuote = function (courseId, courseVariantId) {
+                scope.courseId = courseId;
+                scope.courseVariantId = courseVariantId;
+                quoteService.setQuoteDataScope(scope, courseId, courseVariantId);
             }
 
             scope.refreshDraft = function (cmd, qty) {
-                scope.cmd = quoteService.refreshCommand(cmd, scope.options);
-                scope.options = updateOptions(scope.cmd, scope.options);
-                scope.courseLine.qty = qty;
-
-                // Aquí falta insertar el objeto scope.cmd
+                if (qty)
+                    scope.courseLine.qty = qty;
+                quoteService.refreshDraft(cmd, scope);
             }
 
             scope.setTab = function (tab) {
                 scope.activeTab = tab;
-            }
-
-            function updateOptions(cmd, options) {
-                return quoteService.updateOptions(scope, cmd, options);
             }
         }
 

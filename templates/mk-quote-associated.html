@@ -2,31 +2,31 @@
     <div class="panel-heading">
         <strong data-translate="associatedServices"></strong>
     </div>
-    <table class="table table-borderless table-fixed">
+    <table class="table">
         <tbody>
-            <tr ng-repeat="service in options | orderBy: 'name'"
-                ng-class="{active: serviceLine.added}">
+            <tr ng-repeat="service in options.associatedServiceLine.product | orderBy: 'name'"
+                ng-class="{active: cmd.associatedServiceLine[service.id].added}">
                 <td>
                     <button class="btn btn-default btn-xs"
                             type="button"
-                            ng-hide="serviceLine.added"
-                            ng-click="serviceLine.add(); refreshDraft(cmd)">
+                            ng-hide="cmd.associatedServiceLine[service.id].added"
+                            ng-click="cmd.associatedServiceLine[service.id].add(); refreshDraft(cmd)">
                         <i class="fa fa-plus"></i>
-                        <span translate="add"></span>
+                        <span data-translate="add"></span>
                     </button>
                     <button class="btn btn-default btn-xs"
                             type="button"
-                            ng-show="aerviceLine.added"
-                            ng-click="serviceLine.remove(); refreshDraft(cmd)">
+                            ng-show="cmd.associatedServiceLine[service.id].added"
+                            ng-click="cmd.associatedServiceLine[service.id].remove(); refreshDraft(cmd)">
                         <i class="fa fa-remove"></i>
-                        <span translate="remove"></span>
+                        <span data-translate="remove"></span>
                     </button>
                 </td>
                 <td class="td-width">
-                    <h5 ng-bind="service.name"></h5>
+                    <h5 style="margin:0;" ng-bind="service.name"></h5>
                     <small ng-bind="service.provider.name"></small>
 
-                    <div ng-if="serviceLine.added" class="row">
+                    <div ng-if="cmd.associatedServiceLine[service.id].added" class="row">
 
                         <!-- @TODO Switch based on widget, add start and end date -->
                         <div ng-hide="service.pricingRule == 'UniquePrice'"
@@ -36,11 +36,11 @@
                                 <div class="input-group">
                                     <input type="number" min="1" class="form-control input-sm"
                                            ng-model-options="{ debounce: 1500 }"
-                                           ng-model="serviceLine.qty"
+                                           ng-model="cmd.associatedServiceLine[service.id].qty"
                                            ng-change="refreshDraft(cmd)">
                                     <span class="input-group-addon">
                                         <span translate="unit.{{ service.productUnit }}"></span>
-                                        [<span ng-bind="serviceLine.draftLine.items[0].unitPrice | number:2"></span>]
+                                        [<span ng-bind="cmd.associatedServiceLine[service.id].draftLine.items[0].unitPrice | number:2"></span>]
                                     </span>
                                 </div>
                             </div>
@@ -49,26 +49,27 @@
                 </td>
 
                 <td align="right">
-                    <span ng-show="<%- service %>.added ">
-                        <strong price="<%- service %>.draftLine.regularPrice"
-                                currency-code="service.currency"
-                                symbol="true"
-                                exchange="false">
+                    <span ng-show="cmd.associatedServiceLine[service.id].added ">
+                        <strong class="text-success">
+                            {{cmd.associatedServiceLine[service.id].draftLine.regularPrice}}
+                            {{service.currency}}
                         </strong>
 
-                        <span ng-show="serviceLine.draftLine.total < serviceLine.draftLine.regularPrice">
+                        <span ng-show="cmd.associatedServiceLine[service.id].draftLine.total < cmd.associatedServiceLine[service.id].draftLine.regularPrice">
                             <br> -
-                            <strong currency-code="service.currency"
-                                    class="text-success"
-                                    price="serviceLine.draftLine.regularPrice - serviceLine.draftLine.total"
-                                    symbol="true"
-                                    exchange="false">
+                            <strong class="text-success">
+                                {{(cmd.associatedServiceLine[service.id].draftLine.regularPrice - cmd.associatedServiceLine[service.id].draftLine.total)}}
+                                {{service.currency}}
                             </strong>
                         </span>
                     </span>
 
-                    <span ng-hide="serviceLine.added" class="text-muted">
-                        <span price="service.price[0].amount" currency-code="service.currency" symbol="true" exchange="false"></span><br>
+                    <span ng-hide="cmd.associatedServiceLine[service.id].added" class="text-muted">
+                        <span price="service.price[0].amount" currency-code="service.currency" symbol="true" exchange="false">
+                            {{service.price[0].amount}}
+                            {{service.currency}}
+                        </span>
+                        <br>
                         <small translate="unit.{{ service.periodicCost }}" ng-show="service.periodicCost != 'Once'"></small>
                     </span>
                 </td>

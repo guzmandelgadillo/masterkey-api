@@ -11,11 +11,7 @@
         return {
             link: link,
             templateUrl: templateUrl,
-            replace: true,
-            scope: {
-                options: "=",
-                serviceLine: "="
-            }
+            replace: true
         }
     }
 })(angular);

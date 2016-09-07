@@ -1,0 +1,55 @@
+﻿<form>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong data-translate="instituteAccommodation.title"></strong>
+            <strong class="pull-right">
+                {{draft.accommodationLine.total|number:2}}
+                {{draft.accommodationLine.currency}}
+            </strong>
+        </div>
+        <div class="panel-body">
+            <fieldset class="row" style="margin-bottom: 20px;">
+                <div class="col-md-12">
+                    <select class="form-control"
+                            ng-options="(accommodation.name)
+                        for accommodation in options.accommodationLine.product
+                        track by accommodation.id"
+                            ng-model="cmd.accommodationLine.product"
+                            ng-change="refreshDraft(cmd)">
+                        <option value="">{{ 'wihtoutAccommodation' | translate  }}</option>
+                    </select>
+                </div>
+            </fieldset>
+            <fieldset class="row" style="margin-bottom:20px;" ng-if="cmd.accommodationLine.qty">
+                <div class="col-md-8">
+                    <label data-translate="start"></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control"
+                               ng-model="cmd.accommodationLine.startDate"
+                               datepicker-options="dateOptions"
+                               ng-change="refreshDraft(cmd)"
+                               is-open="datepicker.isOpen"
+                               uib-datepicker-popup="yyyy-MM-dd" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="toggle()">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label data-translate="duration"></label>
+                    <div class="input-group">
+                        <input type="number"
+                               class="form-control"
+                               ng-model="cmd.accommodationLine.qty"
+                               min="0" max="365" step="1"
+                               ng-change="refreshDraft(cmd)" />
+                        <span class="input-group-addon" translate="unit.{{ cmd.accommodationLine.product.productUnit }}"></span>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <mk-quote-variant fees="draft.accommodationLine.items"></mk-quote-variant>
+    </div>
+</form>

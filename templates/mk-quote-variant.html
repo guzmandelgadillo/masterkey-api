@@ -1,10 +1,6 @@
 ﻿<table class="table table-condensed table-striped">
     <tbody ng-repeat="fee in fees">
         <tr ng-class="{muted: fee.regionalPrice}">
-            <td class="text-right">{{ fee.qty }}</td>
-            <td class="col-sm-1">
-                <span translate="unit.{{ fee.unit }}.plural" ng-show="fee.unit != 'Once'"></span>
-            </td>
             <td>
                 <span ng-hide="fee.type == 'BasePrice'">{{ fee.name }}</span>
                 <span ng-show="fee.type == 'BasePrice'">{{ fee.name + 'Price' | translate }}</span>
@@ -24,17 +20,11 @@
             </td>
         </tr>
         <tr ng-show="fee.regionalPrice" class="text-success">
-            <td></td>
-            <td></td>
             <td ng-bind="fee.regionalPrice.name"></td>
             <td class="text-right">{{fee.regionalPrice.unitPrice|number:2}}</td>
             <td class="text-right">{{fee.regionalPrice.total|number:2}}</td>
         </tr>
         <tr ng-repeat="increase in fee.increase">
-            <td ng-bind="increase.qty" class="text-right"></td>
-            <td>
-                <!-- <span translate="unit.{{ increase.unit }}.plural" ng-show="fee.unit != 'Once'"></span> -->
-            </td>
             <td translate="fee.{{ increase.type }}"></td>
             <td class="text-right">
                 <span>
@@ -47,7 +37,6 @@
             </td>
         </tr>
         <tr ng-repeat="discount in fee.discount" class="text-success">
-            <td colspan="2"></td>
             <td colspan="2" ng-bind="discount.name"></td>
 
             <td align="right" valign="middle">

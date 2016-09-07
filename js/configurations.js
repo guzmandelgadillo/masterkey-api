@@ -9,8 +9,8 @@
             "server": "agency/"
         },
         location: {
-            "urlbase": "bower_components/",
-            "home": "masterkey-api/",
+            "urlbase": "/Scripts/", //"bower_components/",
+            "home": "masterkey/", // -api/",
             "data": "data/",
             "templates": "templates/"
         }

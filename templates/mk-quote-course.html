@@ -1,0 +1,54 @@
+﻿<div class="panel panel-default" style="margin:15px 0;">
+    <div class="panel-heading">
+        <strong data-translate="course"></strong>
+        <strong ng-bind="cmd.courseLine.product.name"></strong>
+        <strong class="pull-right">{{draft.courseLine.total|number:2}} {{draft.courseLine.currency}}</strong>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <select class="form-control"
+                        ng-options="courseVariant.name for courseVariant
+                                            in course.variant
+                                            track by courseVariant.id"
+                        ng-model="courseVariant"
+                        ng-change="refreshQuote(course.id, courseVariant.id)"></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div><label><span data-translate="start"></span> <span class="text-danger">*</span></label></div>
+                <div>
+                    <select class="form-control"
+                            ng-options="(event | eventFormat )
+                                                for event in options.courseLine.event
+                                                track by event.id"
+                            ng-model="cmd.courseLine.event"
+                            ng-change="refreshDraft(cmd)"></select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div>
+                    <label>
+                        <span data-translate="duration"></span>
+                    </label>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default disabled">
+                        {{courseLine.qty}}
+                        {{courseVariant.duration.term|translate}}
+                    </button>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="qty in options.courseLine.qty"><a href="" ng-click="refreshDraft(cmd, qty)" ng-bind="qty"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <mk-quote-variant fees="draft.courseLine.items"></mk-quote-variant>
+</div>
+<mk-quote-associated options="options.associatedServiceLine.product" services="cmd.associatedServiceLine"></mk-quote-associated>
+

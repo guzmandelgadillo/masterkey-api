@@ -52,8 +52,13 @@
 
             // Send the searching text
             scope.goSearch = function (place, courseType) {
-                scope.unfilteredList = courseService.listByPlaceAndCourseType(place, courseType);
-                scope.unfilteredList.$promise.then(copyCourseList);
+                if (place && courseType) {
+                    scope.messageDanger = undefined;
+                    scope.unfilteredList = courseService.listByPlaceAndCourseType(place, courseType);
+                    scope.unfilteredList.$promise.then(copyCourseList);
+                } else {
+                    scope.messageDanger = "All the controls are a must.";
+                }
             };
 
             // Refreshing list of course types
@@ -62,17 +67,23 @@
             // Copying list of course types to show on table
             function copyCourseList(response) {
                 scope.courseList = _.map(scope.unfilteredList, function (item) { return item; });
+                courseService.loadAndBindToCourseList(scope.courseList);
                 refreshOptionsList(scope.courseList);
             }
 
             function cityFilter(value, filter) {
-                return countryFilter(value,filter) &&
+                return existingCountry(value) &&
+                    value.institute.city.country.id == filter.city.country.id;
                     value.institute.city.id == filter.city.id;
             }
 
+            function existingCountry(value) {
+                return value.institute && value.institute.city && value.institute.city.country;
+            }
+
             function countryFilter(value, filter) {
-                return value.institute && value.institute.city && value.institute.city.country &&
-                    value.institute.city.country.id == filter.city.country.id;
+                return existingCountry(value) &&
+                    value.institute.city.country.id == filter.country.id;
             }
 
             function schoolFilter(value, filter) {
@@ -84,6 +95,7 @@
             function refreshOptionsList(courseList) {
                 scope.options = {
                     cityList: [],
+                    countryList: [],
                     schoolList: []
                 };
                 for (var index = 0; index < courseList.length; index++) {
@@ -92,11 +104,19 @@
                         var city = value.institute.city;
                         var school = value.institute.school;
                         if (city) {
+                            var country = city.country;
                             var exist = _.some(scope.options.cityList, function (item, index) {
                                 return item.id && item.id == city.id && item.country && item.country.id == city.country.id;
                             });
                             if (!exist)
                                 scope.options.cityList.push(city);
+                            if (country) {
+                                var exist = _.some(scope.options.countryList, function (item, index) {
+                                    return item.id == country.id;
+                                });
+                                if (!exist)
+                                    scope.options.countryList.push(country);
+                            }
                         }
                         if (school) {
                             var exist = _.some(scope.options.schoolList, function (item, index) {

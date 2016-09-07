@@ -28,7 +28,7 @@
             for country in options.countryList
             | orderBy:'name' track by country.id"
                     ng-model="query.country"
-                    ng-change="$refresh()"
+                    ng-change="refresh()"
                     class="form-control input-sm">
             <option value="">{{ 'select...' | translate:{label:'country'} }}</option>
         </select>
