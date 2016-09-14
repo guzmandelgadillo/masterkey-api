@@ -1,8 +1,8 @@
 ﻿(function (angular) {
     'use strict';
-    angular.module("masterkey.api").service("currencyService", ["endpointService", currencyService])
+    angular.module("masterkey.api").service("currencyService", ["endpointService", currencyService]);
     function currencyService(endpoints) {
-        function T() { };
+        function T() { }
         var urlCurrencySrv = "catalog/currency/";
         var KEY = "currency";
         var rates = {};

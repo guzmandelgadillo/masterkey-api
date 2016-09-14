@@ -14,22 +14,35 @@
 
             scope.isActiveTab = function (tab) {
                 return tab === scope.activeTab;
-            }
+            };
+
+            scope.quoteSave = function () {
+                quoteService.postSaveQuote(scope).then(quoteSaveSuccess, quoteSaveError);
+            };
 
             scope.refreshQuote = function (courseId, courseVariantId) {
                 scope.courseId = courseId;
                 scope.courseVariantId = courseVariantId;
                 quoteService.setQuoteDataScope(scope, courseId, courseVariantId);
-            }
+            };
 
             scope.refreshDraft = function (cmd, qty) {
                 if (qty)
                     scope.courseLine.qty = qty;
                 quoteService.refreshDraft(cmd, scope);
-            }
+            };
 
             scope.setTab = function (tab) {
                 scope.activeTab = tab;
+            };
+
+            function quoteSaveSuccess(response) {
+                scope.messages = "La cotización se guardó exitosamente.";
+            }
+
+            function quoteSaveError(error) {
+                scope.errors = "Hubo un error mientras guardaba la cotización.";
+                console.log(error);
             }
         }
 
@@ -37,11 +50,12 @@
             link: link,
             templateUrl: templateUrl,
             scope: {
+                clientId: "=mkClient",
                 courseId: "=mkCourse",
                 courseVariantId: "=mkCourseVariant",
                 userToken: "=mkUser"
             }
-        }
+        };
     }
 })(angular);
 

@@ -58,16 +58,16 @@
                         </ul>
 
                         <div class="btn-group">
-                            <a href=""
+                            <a href="" ng-click="mkSelectedCourse({$course: course.id, $courseVariant: courseVariant.id})"
                                class="btn btn-sm btn-info">
                                 <i class="fa fa-paper-plane-o"></i>
-                                <span translate="quote.button"></span>
+                                <span data-translate="quote.button"></span>
                             </a>
                         </div>
                     </div>
 
                     <p ng-hide="courseVariant.upcomingEvent.length" class="text-warning"
-                       translate="courseEvent.upcoming.notFound">
+                       data-translate="courseEvent.upcoming.notFound">
                     </p>
 
                 </div><!-- ng-repeat courseVariantLis -->

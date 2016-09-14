@@ -12,7 +12,7 @@
         return {
             link: link,
             templateUrl: templateUrl,
-        }
+        };
     }
 })(angular);
 

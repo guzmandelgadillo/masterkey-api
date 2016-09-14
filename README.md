@@ -82,11 +82,11 @@ Uso de las directivas
 Las directivas están diseñadas para ocupar el ancho total de la página, así que debe asegurarse de colocarlas en un espacio que pueda disponer del ancho total y donde pueda extenderse hacia abajo en forma libre.
 Como cualquier directiva sólo se colocan las etiquetas HTML en el lugar conveniente.
 
+Para utilizar las directivas se puede emplear alguna de las formas estándar: Elemento o Atributo.
 
 Directiva para la búsqueda de cursos
 ------------------------------------
 
-Para utilizar las directivas se puede emplear alguna de las formas estándar: Elemento o Atributo.
 ### Utilizar como elemento:
         <mk-search mk-user=”idtoken”></mk-search>
 
@@ -94,14 +94,15 @@ Para utilizar las directivas se puede emplear alguna de las formas estándar: El
         <div data-mk-search data-mk-user=”idtoken”></div>
 El atributo “mk-user” es utilizado para recibir el token de identificación del usuario, mismo que deberá ser asignado dinámicamente mediante una variable de “Angular JS”.
 
+
 Directiva para cotizaciones
 ---------------------------
 
 ### Utilizar como elemento:
-&lt;mk-quote mk-user=”usertoken” mk-course=”courseid” mk-course-variant=”variantid”&gt;&lt;/mk-quote&gt;
+        <mk-quote mk-user=”usertoken” mk-course=”courseid” mk-course-variant=”variantid”></mk-quote>
 
 ### Utilizar como atributo:
-&lt;div data-mk-quote data-mk-user=”usertoken” data-mk-course=”courseid” data-mk-course-variant=”variantid”&gt;&lt;/div&gt;
+        <div data-mk-quote data-mk-user=”usertoken” data-mk-course=”courseid” data-mk-course-variant=”variantid”></div>
 
 Detalle de atributos
 --------------------
@@ -109,4 +110,40 @@ Detalle de atributos
 * **mk-user**. Utilizado para recibir el token de identificación del usuario, mismo que deberá ser asignado dinámicamente mediante una variable de “Angular JS”.
 * **mk-course**. Es el identificador del curso que se mostrará, podría recibirse mediante un parámetro URL y asignarse mediante “Angular JS”.
 * **mk-course-variant**. Es el identificador de “course variant” del curso que se mostrará, también podría recibirse mediante un parámetro URL y asignarse mediante “Angular JS”.
+* **mk-client**. Es el identificador del cliente "client id" que está utilizando la directiva.
 
+Eventos disponibles
+-------------------
+
+### Directiva de búsqueda
+
+* *Atributo*: mk-selected-course
+* *Descripción*: Se desencadena al seleccionar un elemento de la lista de cursos.
+* *Datos disponibles*: $course, $courseVariant.
+* *$course*: Identificador del curso (course Id).
+* *$courseVariant*: Identificador de la variante del curso (course variant Id).
+
+Forma de uso:
+
+        <mk-search mk-user="usertoken" mk-selected-course="handler($course, $courseVariant)"></mk-search>
+
+
+El método "handler" se ejecutará al seleccionar un curso y los datos 
+"$course" y "$courseVariant" estarán disponibles para enviarse como 
+parámetros en caso necesario.
+
+
+### Directiva de cotizaciones
+
+* *Atributo*: mk-quote-add
+* *Descripción*: Se desencadena al guardar la cotización.
+* *Datos disponibles*: $quote
+* *$quote*: Identificador de la venta (sale Id).
+
+Forma de uso:
+
+        <mk-quote mk-user="usertoken" mk-quote-add="handler($quote)"></mk-quote>
+
+
+El método "handler" se ejecutará al guardar la cotización y "$quote" estrá
+disponible para enviarse como parámetro en caso necesario.

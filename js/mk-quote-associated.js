@@ -12,7 +12,7 @@
             link: link,
             templateUrl: templateUrl,
             replace: true
-        }
+        };
     }
 })(angular);
 

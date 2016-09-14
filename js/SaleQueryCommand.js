@@ -63,7 +63,7 @@ app.factory('SaleQueryCommand', function(converterService, commandGenerator){
       client: f.eq,
 
       // Work only with single distributor
-      distributor: function(it){ return it ? it[0] : null },
+      distributor: function (it) { return it ? it[0] : null; },
       
       // Take first value of status. ['Pending'] => 'Pending'
       status: f.eq,

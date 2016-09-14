@@ -1,6 +1,6 @@
 ﻿(function (angular) {
-    angular.module("masterkey.api").factory("quoteService", ["courseService", "DraftCommand", "lineCommand", "SaleQueryCommand", "currencyService", "Price", quoteService]);
-    function quoteService(courseService, DraftCommand, lineCommand, SaleQueryCommand, currencyService, Price) {
+    angular.module("masterkey.api").factory("quoteService", ["$q", "courseService", "DraftCommand", "lineCommand", "SaleQueryCommand", "currencyService", "Price", quoteService]);
+    function quoteService($q, courseService, DraftCommand, lineCommand, SaleQueryCommand, currencyService, Price) {
         function setQuoteDataScope(scope, courseId, courseVariantId) {
             if (!scope) return;
             var courseData = courseService.getCourse(courseId);
@@ -109,7 +109,7 @@
              */
             function addDraftToLine(id, line) {
 
-                if (!line.added) { return line }
+                if (!line.added) { return line; }
 
                 line.draftLine = _.find(draft.lines, function (l) {
                     return l.product.id === line.product.id && l.product.class === line.product.class;
@@ -139,7 +139,7 @@
         function buildProviderList(providerServiceList) {
             return _.reduce(providerServiceList, function (providerList, service) {
                 var exists = _.some(providerList, { id: service.provider.id });
-                if (exists) { return providerList }
+                if (exists) { return providerList; }
                 service.provider.$visible = true;
 
                 return providerList.concat([service.provider]);
@@ -266,7 +266,7 @@
 
             lines = lines || {};
 
-            var linesArray = _.map(Object.keys(lines), function (k) { return lines[k] });
+            var linesArray = _.map(Object.keys(lines), function (k) { return lines[k]; });
 
             return _.filter(linesArray, { added: true });
         }
@@ -294,15 +294,15 @@
 
         function marshalLine(line) {
 
-            function same(property) { return property }
+            function same(property) { return property; }
             function date(property) {
                 if (property) {
                     var date = new Date(property);
                     return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
                 }
             }
-            function id(property) { return property ? property.id : null }
-            function optional(property) { return property ? property : undefined }
+            function id(property) { return property ? property.id : null; }
+            function optional(property) { return property ? property : undefined; }
 
             function applyMarshaller(callback, value) {
                 var callbackList = angular.isArray(callback) ? callback : [callback];
@@ -327,6 +327,22 @@
                     return out;
                 }, {});
             }
+        }
+
+        function postSaveQuote(scope) {
+            var saleData = {
+                name: scope.course.name,
+                courseType: scope.course.type,
+                client: scope.clientId
+            };
+            return $q(function (resolve, reject) {
+                courseService.postCreateSale(saleData).then(function (response) {
+                    var data = marshalCommand(scope.cmd);
+                    courseService.postCreateQuote(response.data.id, data).then(function (response) {
+                        resolve(response);
+                    }, function (error) { reject(error); });
+                }, function (error) { reject(error); }, function (message) { notify(message); });
+            });
         }
 
         function postProcessDraft(response) {
@@ -441,6 +457,7 @@
             applyDraftToCommand: applyDraftToCommand,
             create: create,
             exchange: exchange,
+            postSaveQuote: postSaveQuote,
             refreshCommand: refreshCommand,
             refreshDraft: refreshDraft,
             setQuoteDataScope: setQuoteDataScope,

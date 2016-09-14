@@ -1,13 +1,14 @@
 {
   "name": "masterkey-api",
-  "description": "Directivas de b�squeda y cotizaci�n de cursos",
-  "main": "dist/masterkey-api.js",
+  "description": "Directivas de búsqueda y cotización de cursos",
+  "main": "app.js",
   "authors": [
-    "masterkey"
+    "\"Ramón Guzmán D.\""
   ],
   "license": "MIT",
   "keywords": [
-    "masterkey"
+    "masterkey",
+    "courses"
   ],
   "homepage": "https://github.com/guzmandelgadillo/masterkey-api",
   "ignore": [
@@ -18,14 +19,14 @@
     "tests"
   ],
   "dependencies": {
-    "lodash": "^4.15.0",
-    "angular-translate": "^2.12.0",
     "angular-ui-select": "^0.19.4",
+    "angular-translate": "^2.12.0",
+    "lodash": "^4.15.0",
     "jquery": "1.10.2",
     "bootstrap": "^3.3.7",
-    "checklist-model": "^0.10.0"
-  },
-  "resolutions": {
-    "jquery": "1.10.2"
+    "checklist-model": "^0.10.0",
+    "components-font-awesome": "^4.6.3",
+    "angular-sanitize": "^1.5.8",
+    "angular-i18n": "^1.5.8"
   }
 }

@@ -66,7 +66,7 @@
         }
 
         function listByCourseVariant(courseVariantId) {
-            var url = "agency/courseVariant/" + courseVariantId + "/courseEvent"
+            var url = "agency/courseVariant/" + courseVariantId + "/courseEvent";
             return futureService.getFuturePagedObject(url);
         }
 
@@ -96,7 +96,7 @@
                 return course[variantLoadedProperty] !== true;
             });
 
-            if (!courses.length) { return courseList }
+            if (!courses.length) { return courseList; }
             var variantsList = listByCourse(_.map(courses, function (item) { return item.id; }));
             return variantsList.$promise.then(function (courseVariantList) {
                 return addTo(variantsList, courses);
@@ -106,6 +106,16 @@
         function postCreateDraft(draft) {
             var url = "agency/draft/";
             return futureService.postPromise(url, draft);
+        }
+
+        function postCreateSale(data) {
+            var url = "agency/sale/";
+            return futureService.postPromise(url, data);
+        }
+
+        function postCreateQuote(saleId, data) {
+            var url = "agency/sale/" + saleId + "/quote";
+            return futureService.postPromise(url, data);
         }
 
         function queryByCourseType(search, courseType) {
@@ -128,9 +138,11 @@
             listSales: listSales,
             loadAndBindToCourseList: loadAndBindToCourseList,
             postCreateDraft: postCreateDraft,
+            postCreateQuote: postCreateQuote,
+            postCreateSale: postCreateSale,
             queryByCourseType: queryByCourseType
         };
-    };
+    }
 })(angular);
 
   

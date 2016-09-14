@@ -21,7 +21,7 @@
                 }
 
                 scope.placeList = courseService.queryByCourseType(search, courseType);
-            }
+            };
         }
 
         return {

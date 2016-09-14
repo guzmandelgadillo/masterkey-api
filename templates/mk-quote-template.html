@@ -4,6 +4,7 @@
     </h3>
     <div class="row">
         <div class="col-md-8">
+            <button type="button" class="btn btn-success pull-right" data-translate="quote.save" ng-click="quoteSave()"></button>
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" ng-class="{active: isActiveTab('course')}">
                     <a href="" ng-click="setTab('course')" aria-controls="course" role="tab" data-toggle="tab" data-translate="course"></a>
@@ -91,6 +92,12 @@
                     </ul>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info" ng-show="messages">{{messages}}</div>
+            <div class="alert alert-danger" ng-show="errors">{{errors}}</div>
         </div>
     </div>
 </div>

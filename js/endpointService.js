@@ -38,7 +38,7 @@
             get: get,
             headers: getHeaders,
             post: post
-        }
+        };
     }
 })(angular);
 

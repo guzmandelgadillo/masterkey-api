@@ -34,7 +34,7 @@
          */
         CourseType.query = function () {
             return dataFile.loadSource(file).then(function (courseTypes) {
-                return courseTypes.map(function (it) { return new CourseType(it) });
+                return courseTypes.map(function (it) { return new CourseType(it); });
             });
         };
 

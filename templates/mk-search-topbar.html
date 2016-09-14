@@ -1,20 +1,20 @@
 ﻿<div style="overflow: visible; background-color: #CCC; margin: 15px 0; padding: 15px;">
     <form class="row" ng-submit="goSearch(searchCmd.place, searchCmd.courseType)">
         <div class="col-md-3">
-            <select ng-options="type.value as (type.value) for type in courseTypeList"
+            <select ng-options="type.value as ('courseType.' + type.value| translate) for type in courseTypeList"
                     ng-model="searchCmd.courseType"
                     class="form-control"></select>
         </div>
 
         <div class="col-md-6">
-            <ui-select ng-model="searchCmd.place" name="place">
+            <ui-select ng-model="searchCmd.place" theme="bootstrap">
 
-                <ui-select-match placeholder="{{ 'courseCountry.placeholder' }}">
-                    <span class="fa fa-map-marker" ng-show="$select.selected.type == 'city'"></span>
-                    <span class="fa fa-university" ng-show="$select.selected.type == 'school'"></span>
-                    <span class="fa fa-flag" ng-show="$select.selected.type == 'country'"></span>
-                    <span ng-bind="$select.selected.name"></span>
-                    <span ng-show="$select.selected.type == 'city'">, {{ searchCmd.place.countryCode }}</span>
+                <ui-select-match placeholder="{{ 'courseCountry.placeholder'|translate }}">
+                    <i class="fa fa-map-marker" ng-show="$select.selected.type == 'city'"></i>
+                    <i class="fa fa-university" ng-show="$select.selected.type == 'school'"></i>
+                    <i class="fa fa-flag" ng-show="$select.selected.type == 'country'"></i>
+                    <i ng-bind="$select.selected.name"></i>
+                    <i ng-show="$select.selected.type == 'city'">, {{ searchCmd.place.countryCode }}</i>
                 </ui-select-match>
 
                 <ui-select-choices repeat="place in placeList"

@@ -33,7 +33,7 @@
 
                     return true;
                 });
-            }
+            };
 
             // Get icon class from font awesome
             scope.getIconType = function (type) {
@@ -48,7 +48,7 @@
                         return "fa fa-university";
                 }
                 return "fa fa-question";
-            }
+            };
 
             // Send the searching text
             scope.goSearch = function (place, courseType) {
@@ -73,7 +73,7 @@
 
             function cityFilter(value, filter) {
                 return existingCountry(value) &&
-                    value.institute.city.country.id == filter.city.country.id;
+                    value.institute.city.country.id == filter.city.country.id &&
                     value.institute.city.id == filter.city.id;
             }
 
@@ -103,25 +103,21 @@
                     if (value.institute) {
                         var city = value.institute.city;
                         var school = value.institute.school;
+                        var exist = false;
+                        var existObject = new T(value.institute);
                         if (city) {
                             var country = city.country;
-                            var exist = _.some(scope.options.cityList, function (item, index) {
-                                return item.id && item.id == city.id && item.country && item.country.id == city.country.id;
-                            });
-                            if (!exist)
-                                scope.options.cityList.push(city);
                             if (country) {
-                                var exist = _.some(scope.options.countryList, function (item, index) {
-                                    return item.id == country.id;
-                                });
+                                exist = _.some(scope.options.cityList, existObject.existCity);
+                                if (!exist)
+                                    scope.options.cityList.push(city);
+                                exist = _.some(scope.options.countryList, existObject.existCountry);
                                 if (!exist)
                                     scope.options.countryList.push(country);
                             }
                         }
                         if (school) {
-                            var exist = _.some(scope.options.schoolList, function (item, index) {
-                                return item.id && item.id == school.id;
-                            });
+                            exist = _.some(scope.options.schoolList, existObject.existSchool);
                             if (!exist)
                                 scope.options.schoolList.push(school);
                         }
@@ -130,12 +126,31 @@
             }
         }
 
+        function T(institute) {
+            this.city = institute.city;
+            this.country = institute.city ? institute.city.country : undefined;
+            this.school = institute.school;
+        }
+
+        T.prototype.existCity = function (item, index) {
+            return item.id && item.id == this.city.id && item.country && this.country && item.country.id == this.country.id;
+        };
+
+        T.prototype.existCountry = function (item, index) {
+            return item.id == this.country.id;
+        };
+
+        T.prototype.existSchool = function (item, index) {
+            return item.id && item.id == this.school.id;
+        };
+
         return {
             restrict: 'EA',
             link: link,
             templateUrl: templateUrl,
             scope: {
-                userToken: '=mkUser'
+                userToken: '=mkUser',
+                mkSelectedCourse: "&"
             }
         };
     }

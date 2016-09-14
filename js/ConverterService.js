@@ -22,7 +22,7 @@ app.service('converterService', function(){
      * @return {Mixed} id value of the object
      */
     id: function id(val){
-      if(val){ return val.id }
+        if (val) { return val.id; }
     },
 
     /**
@@ -167,7 +167,7 @@ app.service('converterService', function(){
         var val = {};
         val[property] = data;
 
-        if(data){ return val }
+        if (data) { return val; }
       };
     }
   };
@@ -256,7 +256,7 @@ app.service('converterService', function(){
    * 
    * @return {Object} 
    */
-  ConverterService.prototype.getDefaultFilters = function(){ return filters };
+  ConverterService.prototype.getDefaultFilters = function () { return filters; };
 
   return new ConverterService();
 });

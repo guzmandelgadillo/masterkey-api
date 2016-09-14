@@ -19,7 +19,7 @@
 
         function loadSource(source) {
             return $http.get(dataPath + source + ext, { cache: true })
-                .then(function (response) { return response.data });
+                .then(function (response) { return response.data; });
         }
 
         function setAuthToken(token) {
@@ -33,6 +33,6 @@
             loadSource: loadSource,
             setAuthToken: setAuthToken,
             templatesPath: templatesPath
-        }
+        };
     }]);
 })(angular);

@@ -69,7 +69,7 @@
         }
         
         function getDatacontainer(format) {
-            if (format !== 'single'){ return [] }
+            if (format !== 'single') { return []; }
             return {};
         }
 
@@ -85,6 +85,6 @@
             getPromise: getPromise,
             postPromise: postPromise
         };
-    };
+    }
 })(angular);
 
