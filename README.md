@@ -8,8 +8,26 @@ La aplicación donde se instalen las directivas debe tener instalada y funcionan
 * Angular sanitize
 * Angular UI-Select
 * Angular translate
-* Bootstrap 2.x o superior
 * Lodash 4.15
+* Checklist model
+* Bootstrap 2.x o superior
+* Font Awesome
+
+### Scripts
+        <script src="jquery.js"></script>
+        <script src="bootstrap.js"></script>
+        <script src="angular.js"></script>
+        <script src="angular-sanitize.js"></script>
+        <script src="angular-translate.js"></script>
+        <script src="select.js"></script>
+        <script src="lodash.js"></script>
+        <script src="checklist-model.js"></script>
+
+### Styles
+        <link rel="stylesheet" href="bootstrap.css" />
+        <link rel="stylesheet" href="font-awesome.css" />
+        <link rel="stylesheet" href="select.css" />
+        <link rel="stylesheet" href="masterkey-api.css" />
 
 Instalación
 -----------
@@ -24,7 +42,7 @@ Implementación
 
 Primero debe asegurarse de llamar las dependencias señaladas arriba y luego incluir el script de la directiva, dependiendo de las condiciones de la instalación podría ser así:
 
-        <script href=”bower_components/masterkey/dist/js/masterkey-api.js” />
+        <script src=”bower_components/masterkey/dist/js/masterkey-api.js”></script>
 
 
 Configuración
