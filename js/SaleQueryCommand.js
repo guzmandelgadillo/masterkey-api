@@ -5,7 +5,7 @@ var app = angular.module('masterkey.api');
 /**
  * QueryCommadn to filter payments
  */
-app.factory('SaleQueryCommand', function(converterService, commandGenerator){
+app.factory('SaleQueryCommand', ["converterService", "commandGenerator", function(converterService, commandGenerator){
 
   var allowedStatus = ['All', 'Pending', 'Active', 'Approved'];
   //var defaultStatus = 'All';
@@ -94,6 +94,6 @@ app.factory('SaleQueryCommand', function(converterService, commandGenerator){
     }
   });
 
-});
+}]);
 
 })(angular);

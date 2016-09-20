@@ -6,7 +6,7 @@
         /**
          * Filter to format evetn, uses date and translate
          */
-        .filter('eventFormat', function ($filter) {
+        .filter('eventFormat', ["$filter", function ($filter) {
             return function EventFilter(event) {
                 var
                 start = $filter('date')(event.start, 'fullDate'),
@@ -14,6 +14,6 @@
 
                 return start + ' [' + duration + ']';
             };
-        });
+        }]);
 })(angular);
 

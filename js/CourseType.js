@@ -6,7 +6,7 @@
     /**
      * Factory to load CouorseType configuration
     */
-    .factory('CourseType', function (dataFile) {
+    .factory('CourseType', ["dataFile", function (dataFile) {
 
         var
         file = 'courseType',
@@ -39,7 +39,7 @@
         };
 
         return CourseType;
-    });
+    }]);
 })(angular);
 
 

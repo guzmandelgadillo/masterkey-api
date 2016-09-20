@@ -5,7 +5,7 @@ var app = angular.module('masterkey.api');
 /**
  * Los level service to create Command Objects
  */
-app.service('commandGenerator', function(converterService){
+app.service('commandGenerator', ["converterService", function(converterService){
 
   function CommandGenerator(){}
 
@@ -161,6 +161,6 @@ app.service('commandGenerator', function(converterService){
   };
 
   return new CommandGenerator();
-});
+}]);
 
 })(angular);

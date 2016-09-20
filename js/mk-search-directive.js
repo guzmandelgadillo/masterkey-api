@@ -98,51 +98,45 @@
                     countryList: [],
                     schoolList: []
                 };
+                var city, school, country;
                 for (var index = 0; index < courseList.length; index++) {
                     var value = courseList[index];
                     if (value.institute) {
-                        var city = value.institute.city;
-                        var school = value.institute.school;
+                        city = value.institute.city;
+                        school = value.institute.school;
                         var exist = false;
-                        var existObject = new T(value.institute);
                         if (city) {
-                            var country = city.country;
+                            country = city.country;
                             if (country) {
-                                exist = _.some(scope.options.cityList, existObject.existCity);
+                                exist = _.some(scope.options.cityList, existCity);
                                 if (!exist)
                                     scope.options.cityList.push(city);
-                                exist = _.some(scope.options.countryList, existObject.existCountry);
+                                exist = _.some(scope.options.countryList, existCountry);
                                 if (!exist)
                                     scope.options.countryList.push(country);
                             }
                         }
                         if (school) {
-                            exist = _.some(scope.options.schoolList, existObject.existSchool);
+                            exist = _.some(scope.options.schoolList, existSchool);
                             if (!exist)
                                 scope.options.schoolList.push(school);
                         }
                     }
                 }
+
+                function existCity(item, index) {
+                    return item.id && item.id == city.id && item.country && country && item.country.id == country.id;
+                }
+
+                function existCountry(item, index) {
+                    return item.id == country.id;
+                }
+
+                function existSchool(item, index) {
+                    return item.id && item.id == school.id;
+                }
             }
         }
-
-        function T(institute) {
-            this.city = institute.city;
-            this.country = institute.city ? institute.city.country : undefined;
-            this.school = institute.school;
-        }
-
-        T.prototype.existCity = function (item, index) {
-            return item.id && item.id == this.city.id && item.country && this.country && item.country.id == this.country.id;
-        };
-
-        T.prototype.existCountry = function (item, index) {
-            return item.id == this.country.id;
-        };
-
-        T.prototype.existSchool = function (item, index) {
-            return item.id && item.id == this.school.id;
-        };
 
         return {
             restrict: 'EA',
