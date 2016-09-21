@@ -10,7 +10,7 @@
         },
         location: {
             "urlbase": "bower_components/",
-            "home": "masterkey/-api/",
+            "home": "masterkey-api/",
             "data": "data/",
             "templates": "templates/"
         }
