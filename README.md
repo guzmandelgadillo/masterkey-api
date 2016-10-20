@@ -59,7 +59,7 @@ Las plantillas se encuentran en un subdirectorio denominado "templates", pero se
 En la configuración del módulo debe llamarse a la constante "configurations" donde se pueden cambiar los valores predeterminados en la búsqueda de plantillas y archivos de datos.
 
 Para modificar la constante configurations:
-        angular.module("mymodule").config(["configuratinos", function(configurations){ configurations.location.urlbase = "mypath" }]);
+        angular.module("mymodule").config(["configurations", function(configurations){ configurations.location.urlbase = "mypath" }]);
 
 Existen dos variables con los datos de configuración:
 * configurations.location y
@@ -163,5 +163,5 @@ Forma de uso:
         <mk-quote mk-user="usertoken" mk-quote-add="handler($quote)"></mk-quote>
 
 
-El método "handler" se ejecutará al guardar la cotización y "$quote" estrá
+El método "handler" se ejecutará al guardar la cotización y "$quote" estará
 disponible para enviarse como parámetro en caso necesario.

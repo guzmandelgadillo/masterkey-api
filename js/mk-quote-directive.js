@@ -38,6 +38,7 @@
 
             function quoteSaveSuccess(response) {
                 scope.messages = "La cotización se guardó exitosamente.";
+                scope.quoteAdd({ $quote: response.data.id });
             }
 
             function quoteSaveError(error) {
@@ -53,7 +54,8 @@
                 clientId: "=mkClient",
                 courseId: "=mkCourse",
                 courseVariantId: "=mkCourseVariant",
-                userToken: "=mkUser"
+                userToken: "=mkUser",
+                quoteAdd: "&mkQuoteAdd"
             }
         };
     }
