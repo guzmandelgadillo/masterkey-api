@@ -38,7 +38,7 @@
 
             function quoteSaveSuccess(response) {
                 scope.messages = "La cotización se guardó exitosamente.";
-                scope.quoteAdd({ $quote: response.data.id });
+                scope.quoteAdd({ $quote: response.data.sale.id });
             }
 
             function quoteSaveError(error) {
